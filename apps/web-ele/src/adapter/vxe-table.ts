@@ -1,4 +1,5 @@
 import type { VxeTableGridOptions } from '@vben/plugins/vxe-table';
+import type { Recordable } from '@vben/types';
 
 import { h } from 'vue';
 
@@ -67,5 +68,11 @@ setupVbenVxeTable({
 });
 
 export { useVbenVxeGrid };
+
+// 添加OnActionClickParams类型定义
+export type OnActionClickParams<T = Recordable<any>> = {
+  code: string;
+  row: T;
+};
 
 export type * from '@vben/plugins/vxe-table';

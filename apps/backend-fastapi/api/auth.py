@@ -5,22 +5,22 @@ from sqlalchemy.future import select
 from typing import List
 import uuid
 
-from ..core.database import get_db
-from ..core.security import (
+from core.database import get_db
+from core.security import (
     verify_password,
     create_access_token,
     create_refresh_token,
     decode_jwt
 )
-from ..core.config import settings
-from ..models.user import User
-from ..schemas.auth import (
+from core.config import settings
+from models.user import User
+from schemas.auth import (
     LoginRequest,
     LoginResponse,
     RefreshTokenResponse
 )
-from ..schemas.base import ResponseBase
-from ..utils.response import success_response, error_response
+from schemas.base import ResponseBase
+from utils.response import success_response, error_response
 
 router = APIRouter()
 
@@ -58,6 +58,15 @@ async def get_current_user(
     
     return user
 
+@router.options("/login", status_code=200, response_model=None, include_in_schema=False)
+async def login_options(response: Response):
+    """处理登录接口的OPTIONS请求"""
+    # 设置CORS头信息
+    response.headers["Allow"] = "POST, OPTIONS"
+    response.headers["Access-Control-Allow-Methods"] = "POST, OPTIONS"
+    response.headers["Access-Control-Allow-Headers"] = "*"
+    return response
+
 @router.post("/login", response_model=ResponseBase[LoginResponse])
 async def login(
     login_data: LoginRequest,
@@ -65,6 +74,8 @@ async def login(
     db: AsyncSession = Depends(get_db)
 ):
     """用户登录"""
+    print("收到登录请求！")
+    print(f"请求数据: {login_data}")
     # 查询用户
     result = await db.execute(select(User).where(User.username == login_data.username))
     user = result.scalars().first()
@@ -106,7 +117,8 @@ async def login(
         phone=user.phone,
         avatar=user.avatar,
         access_token=access_token,
-        is_superuser=user.is_superuser
+        is_superuser=user.is_superuser,
+        homePath="/analytics"  # 设置默认首页路径
     )
     
     return success_response(data=login_response)

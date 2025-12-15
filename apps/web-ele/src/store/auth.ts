@@ -33,20 +33,29 @@ export const useAuthStore = defineStore('auth', () => {
     let userInfo: null | UserInfo = null;
     try {
       loginLoading.value = true;
-      const { accessToken } = await loginApi(params);
+      // 过滤掉不需要的字段，只传递username和password给后端
+      const { username, password } = params;
+      const loginResult = await loginApi({ username, password });
 
-      // 如果成功获取到 accessToken
-      if (accessToken) {
-        // 将 accessToken 存储到 accessStore 中
-        accessStore.setAccessToken(accessToken);
+      // 如果成功获取到登录结果
+      if (loginResult && loginResult.access_token) {
+        // 将 access_token 存储到 accessStore 中
+        accessStore.setAccessToken(loginResult.access_token);
 
-        // 获取用户信息并存储到 accessStore 中
-        const [fetchUserInfoResult, accessCodes] = await Promise.all([
-          fetchUserInfo(),
-          getAccessCodesApi(),
-        ]);
+        // 构建用户信息对象
+        userInfo = {
+          id: loginResult.id,
+          username: loginResult.username,
+          realName: loginResult.nickname, // 将nickname映射为realName
+          email: loginResult.email,
+          phone: loginResult.phone,
+          avatar: loginResult.avatar,
+          roles: ['admin'], // 根据实际情况从后端获取角色信息
+          homePath: loginResult.homePath,
+        };
 
-        userInfo = fetchUserInfoResult;
+        // 获取用户权限码
+        const accessCodes = await getAccessCodesApi();
 
         userStore.setUserInfo(userInfo);
         accessStore.setAccessCodes(accessCodes);

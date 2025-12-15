@@ -16,6 +16,7 @@ class LoginResponse(BaseModel):
     avatar: Optional[str] = None
     access_token: str
     is_superuser: bool = False
+    homePath: str = "/analytics"  # 默认首页路径
 
 class RefreshTokenResponse(BaseModel):
     """刷新token响应模型"""

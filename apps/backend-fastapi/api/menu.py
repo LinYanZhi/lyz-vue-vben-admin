@@ -3,12 +3,12 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from typing import List, Dict, Any
 
-from ..core.database import get_db
-from ..api.auth import get_current_user
-from ..models.menu import Menu
-from ..models.user import User
-from ..schemas.base import ResponseBase
-from ..utils.response import success_response, error_response
+from core.database import get_db
+from api.auth import get_current_user
+from models.menu import Menu
+from models.user import User
+from schemas.base import ResponseBase
+from utils.response import success_response, error_response
 
 router = APIRouter()
 

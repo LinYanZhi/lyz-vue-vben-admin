@@ -202,7 +202,7 @@ catalogs:
       specifier: ^1.11.2
       version: 1.12.0
     czg:
-      specifier: ^1.11.1
+      specifier: 1.12.0
       version: 1.12.0
     dayjs:
       specifier: ^1.11.13
@@ -590,6 +590,9 @@ importers:
       cspell:
         specifier: 'catalog:'
         version: 8.19.4
+      czg:
+        specifier: 'catalog:'
+        version: 1.12.0
       happy-dom:
         specifier: 'catalog:'
         version: 17.6.3

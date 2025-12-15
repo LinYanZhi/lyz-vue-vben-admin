@@ -44,6 +44,7 @@ class UserInfoResponse(BaseModel):
     avatar: Optional[str] = None
     is_superuser: bool = False
     roles: List[str] = []
+    homePath: str = "/analytics"  # 默认首页路径
     
     class Config:
         from_attributes = True

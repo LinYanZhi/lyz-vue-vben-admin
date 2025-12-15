@@ -8,6 +8,6 @@ passlib[bcrypt]==1.7.4
 python-multipart==0.0.7
 python-dotenv==1.0.1
 mysql-connector-python==8.3.0
-psycopg2-binary==2.9.9
 aiomysql==0.2.0
-aiopg==1.4.0
+
+pip install fastapi uvicorn[standard] sqlalchemy pydantic pydantic-settings python-jose[cryptography] passlib[bcrypt] python-multipart python-dotenv mysql-connector-python aiomysql

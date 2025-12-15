@@ -9,7 +9,15 @@ export namespace AuthApi {
 
   /** 登录接口返回值 */
   export interface LoginResult {
-    accessToken: string;
+    id: number;
+    username: string;
+    nickname: string;
+    email: string;
+    phone: string;
+    avatar: null | string;
+    access_token: string;
+    is_superuser: boolean;
+    homePath: string;
   }
 
   export interface RefreshTokenResult {

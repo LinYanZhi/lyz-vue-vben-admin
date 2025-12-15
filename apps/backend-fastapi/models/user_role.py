@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, ForeignKey
-from ..core.database import Base
+from core.database import Base
 
 class UserRole(Base):
     """用户角色关联模型"""

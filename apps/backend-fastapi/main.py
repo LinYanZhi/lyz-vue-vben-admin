@@ -4,10 +4,10 @@ from fastapi.responses import JSONResponse
 from contextlib import asynccontextmanager
 import uvicorn
 
-from .core.config import settings
-from .core.database import init_db
-from .api import api_router
-from .schemas.base import ResponseBase
+from core.config import settings
+from core.database import init_db
+from api import api_router
+from schemas.base import ResponseBase
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -18,8 +18,12 @@ async def lifespan(app: FastAPI):
     print("数据库初始化完成")
     
     # 初始化数据
-    from .utils.init_data import init_all_data
-    await init_all_data()
+    from utils.init_data import init_all_data
+    from core.database import AsyncSessionLocal
+    
+    # 获取数据库会话并初始化数据
+    async with AsyncSessionLocal() as db:
+        await init_all_data(db)
     
     yield
     
@@ -76,7 +80,7 @@ if __name__ == "__main__":
     uvicorn.run(
         "main:app",
         host="0.0.0.0",
-        port=3001,
+        port=settings.port,
         reload=settings.debug,
         log_level="info"
     )

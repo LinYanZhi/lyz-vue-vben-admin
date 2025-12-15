@@ -82,6 +82,7 @@
     "autoprefixer": "catalog:",
     "cross-env": "catalog:",
     "cspell": "catalog:",
+    "czg": "catalog:",
     "happy-dom": "catalog:",
     "is-ci": "catalog:",
     "lefthook": "catalog:",

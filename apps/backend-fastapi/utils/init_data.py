@@ -2,11 +2,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy.exc import IntegrityError
 
-from ..core.security import get_password_hash
-from ..models.user import User
-from ..models.role import Role
-from ..models.menu import Menu
-from ..models.dept import Dept
+from core.security import get_password_hash
+from models.user import User
+from models.role import Role
+from models.menu import Menu
+from models.dept import Dept
 
 async def init_superuser(db: AsyncSession):
     """初始化超级管理员"""
@@ -23,8 +23,10 @@ async def init_superuser(db: AsyncSession):
         username="admin",
         password=get_password_hash("admin123"),
         nickname="超级管理员",
+        name="超级管理员",
         email="admin@example.com",
         phone="13800138000",
+        dept_id=1,  # 分配到总公司
         is_superuser=True,
         status=True
     )
@@ -235,7 +237,11 @@ async def init_depts(db: AsyncSession):
 
 async def init_all_data(db: AsyncSession):
     """初始化所有数据"""
-    await init_superuser(db)
-    await init_roles(db)
-    await init_menus(db)
+    # 先创建部门（用户依赖部门）
     await init_depts(db)
+    # 然后创建角色（用户依赖角色）
+    await init_roles(db)
+    # 然后创建菜单
+    await init_menus(db)
+    # 最后创建用户（依赖部门和角色）
+    await init_superuser(db)

@@ -1,5 +1,5 @@
 from typing import Optional, TypeVar, Generic
-from ..schemas.base import ResponseBase
+from schemas.base import ResponseBase
 
 T = TypeVar('T')
 

@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, Integer
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
-from ..core.database import Base
+from core.database import Base
 
 class Menu(Base):
     """菜单模型"""

@@ -4,8 +4,8 @@ from jose import JWTError, jwt
 from passlib.context import CryptContext
 from .config import settings
 
-# 密码哈希上下文
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+# 密码哈希上下文 - 使用pbkdf2_sha256代替bcrypt以避免密码长度限制和passlib库的bug
+pwd_context = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
 
 def create_access_token(subject: Union[str, Any], expires_delta: Optional[timedelta] = None) -> str:
     """创建访问令牌"""
@@ -35,6 +35,9 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 
 def get_password_hash(password: str) -> str:
     """获取密码哈希值"""
+    # bcrypt算法限制密码长度不能超过72字节
+    if len(password) > 72:
+        password = password[:72]
     return pwd_context.hash(password)
 
 def decode_jwt(token: str) -> Optional[dict]:
